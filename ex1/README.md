@@ -1,6 +1,6 @@
-# Programming Exercise 1: Linear Regression
+<center> # Machine Learning </center>
 
-## Machine Learning
+## Programming Exercise 1: Linear Regression
 
 ### Requirement
  - numpy
