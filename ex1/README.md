@@ -1,4 +1,4 @@
-<center> # Machine Learning </center>
+# <center>Machine Learning</center>
 
 ## Programming Exercise 1: Linear Regression
 
