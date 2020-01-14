@@ -36,8 +36,8 @@ from gradientDescent import gradientDescent
 # ==================== Part 1: Plotting ====================
 # Load Data
 data = np.loadtxt('./ex2data1.txt', dtype=float, delimiter=',')
-X, y = data[:, :2], data[:, 2]
-np.set_printoptions(precision=3, suppress=True)
+X, y = data[:, :2], data[:, 2, np.newaxis]
+np.set_printoptions(precision=4, suppress=True)
 
 print('Plotting data with + indicating (y = 1) examples and o indicating (y = 0) examples.\n')
 fig = plotData(X, y, legend=['Admitted', 'Not admitted'], label=['Exam 1 score', 'Exam 2 score'])
@@ -50,22 +50,22 @@ input("Program paused. Press enter to continue.\n")
 # Setup the data matrix appropriately, and add ones for the intercept term
 m, n = X.shape
 X = np.concatenate((np.ones([m, 1], dtype=float), X), axis=1)
-initial_theta = np.zeros([n + 1])
+initial_theta = np.zeros([n + 1, 1])
 
 # Compute and display initial cost and gradient
 cost, grad = costFunction(initial_theta, X, y, requires_grad=True)
-print('Cost at initial theta (zeros): %f\n' % cost)
+print('Cost at initial theta (zeros): %f' % cost)
 print('Expected cost (approx): 0.693\n')
 print('Gradient at initial theta (zeros): \n', grad)
-print('Expected gradients (approx):\n -0.1000\n -12.0092\n -11.2628\n')
+print('Expected gradients (approx):\n -0.1000, -12.0092, -11.2628\n')
 
 # Compute and display cost and gradient with non-zero theta
-test_theta = np.array([-24, 0.2, 0.2])
+test_theta = np.array([[-24], [0.2], [0.2]])
 cost, grad = costFunction(test_theta, X, y, requires_grad=True)
-print('Cost at test theta (zeros): %f\n' % cost)
+print('Cost at test theta: %f' % cost)
 print('Expected cost (approx): 0.218\n')
-print('Gradient at test theta (zeros): \n', grad)
-print('Expected gradients (approx):\n 0.043\n 2.566\n 2.647\n')
+print('Gradient at test theta: \n', grad)
+print('Expected gradients (approx):\n 0.043, 2.566, 2.647\n')
 
 input("Program paused. Press enter to continue.\n")
 
@@ -80,7 +80,7 @@ print('theta: \n', theta)
 print('Expected theta (approx):\n-25.161\n 0.206\n 0.201\n')
 
 # Plot Boundary
-plotDecisionBoundary(theta, X, y)
+plotDecisionBoundary(theta, X, y, legend=['Admitted', 'Not admitted'], label=['Exam 1 score', 'Exam 2 score'])
 input("Program paused. Press enter to continue.\n")
 
 # ============== Part 4: Predict and Accuracies ==============
@@ -99,7 +99,7 @@ print('Expected accuracy (approx): 89.0\n')
 
 # ============= Part 5: Optimizing using gradientDescent  =============
 # take feature normalize to accelerate the convergence
-X, y = data[:, :2], data[:, 2]
+X, y = data[:, :2], data[:, 2, np.newaxis]
 X, mu, sigma = featureNormalize(X)
 X = np.concatenate((np.ones([m, 1], dtype=float), X), axis=1)
 
@@ -121,7 +121,7 @@ X_test = np.array([[45, 85]])
 X_test = (X_test - mu) / sigma
 prob = sigmoid(np.concatenate((np.array([[1.0]]), X_test), axis=1)  @ theta)
 print('For a student with scores 45 and 85, we predict an admission probability of', prob)
-print('Expected value: 0.775 +/- 0.002\n\n')
+print('Expected value: 0.775 +/- 0.002\n')
 
 # Compute accuracy on our training set
 p = sigmoid(X @ theta)
