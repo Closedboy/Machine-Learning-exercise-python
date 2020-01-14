@@ -35,7 +35,7 @@ from plotDecisionBoundary import plotDecisionBoundary
 
 # Load Data
 data = np.loadtxt('./ex2data2.txt', dtype=float, delimiter=',')
-X, y = data[:, :2], data[:, 2]
+X, y = data[:, :2], data[:, 2, np.newaxis]
 np.set_printoptions(precision=4, suppress=True)
 
 fig = plotData(X, y, legend=['y=1', 'y=0'], label=['Microchip Test 1', 'Microchip Test 2'])
@@ -46,7 +46,7 @@ plt.close(fig)
 m = y.shape[0]
 X = mapFeature(X[:, 0, np.newaxis], X[:, 1, np.newaxis], m)
 n = X.shape[1]
-initial_theta = np.zeros([n])
+initial_theta = np.zeros([n, 1])
 
 # Set regularization parameter lambda to 1
 reg_factor = 1.0
@@ -61,11 +61,11 @@ print(' 0.0085, 0.0188, 0.0001, 0.0503, 0.0115\n')
 input("Program paused. Press enter to continue.\n\n")
 
 # Compute and display cost and gradient with all-ones theta and lambda = 10
-test_theta = np.ones([n], dtype=float)
+test_theta = np.ones([n, 1], dtype=float)
 cost, grad = costFunctionReg(test_theta, X, y, reg_factor=10.0, requires_grad=True)
 print('Cost at test theta (with lambda = 10): %f' % cost)
 print('Expected cost (approx): 3.16\n')
-print('Gradient at initial theta (zeros) - first five values only:\n', grad[:5])
+print('Gradient at test theta (zeros) - first five values only:\n', grad[:5])
 print('Expected gradients (approx) - first five values only:')
 print(' 0.3460, 0.1614, 0.1948, 0.2269, 0.0922\n')
 input("Program paused. Press enter to continue.\n")
@@ -84,6 +84,6 @@ for r in reg_factor:
 
     p = sigmoid(X @ theta)
     pre = np.where(p >= 0.5, 1, 0)
-    accuracy = np.mean((pre == y).astype(np.float)) * 100
+    accuracy = np.mean((pre[:, np.newaxis] == y).astype(np.float)) * 100
     print('Train Accuracy with lambda = {}: {}'.format(r, accuracy))
 
