@@ -17,9 +17,8 @@ def costFunctionReg(theta, X, y, reg_factor, requires_grad=False):
     J = -1.0 / m * (y.T @ np.log(h + epsilon) + (1 - y).T @ np.log(1 - h + epsilon)) \
         + reg_factor / (2.0 * m) * theta[1:].T @ theta[1:]
     if requires_grad:
-        temp = theta
-        temp[0, :] = 0
-        grad = 1.0 / m * X.T @ (h - y) + reg_factor / m * temp
+        grad = 1.0 / m * X.T @ (h - y)
+        grad[1:] = grad[1:] + reg_factor / m * theta[1:]
         return J, grad
     else:
         return J

@@ -36,7 +36,7 @@ from gradientDescent import gradientDescent
 # ==================== Part 1: Plotting ====================
 # Load Data
 data = np.loadtxt('./ex2data1.txt', dtype=float, delimiter=',')
-X, y = data[:, :2], data[:, 2, np.newaxis]
+X, y = data[:, :2], data[:, 2]
 np.set_printoptions(precision=4, suppress=True)
 
 print('Plotting data with + indicating (y = 1) examples and o indicating (y = 0) examples.\n')
@@ -50,7 +50,7 @@ input("Program paused. Press enter to continue.\n")
 # Setup the data matrix appropriately, and add ones for the intercept term
 m, n = X.shape
 X = np.concatenate((np.ones([m, 1], dtype=float), X), axis=1)
-initial_theta = np.zeros([n + 1, 1])
+initial_theta = np.zeros([n + 1])
 
 # Compute and display initial cost and gradient
 cost, grad = costFunction(initial_theta, X, y, requires_grad=True)
@@ -60,7 +60,7 @@ print('Gradient at initial theta (zeros): \n', grad)
 print('Expected gradients (approx):\n -0.1000, -12.0092, -11.2628\n')
 
 # Compute and display cost and gradient with non-zero theta
-test_theta = np.array([[-24], [0.2], [0.2]])
+test_theta = np.array([-24, 0.2, 0.2])
 cost, grad = costFunction(test_theta, X, y, requires_grad=True)
 print('Cost at test theta: %f' % cost)
 print('Expected cost (approx): 0.218\n')
@@ -99,7 +99,7 @@ print('Expected accuracy (approx): 89.0\n')
 
 # ============= Part 5: Optimizing using gradientDescent  =============
 # take feature normalize to accelerate the convergence
-X, y = data[:, :2], data[:, 2, np.newaxis]
+X, y = data[:, :2], data[:, 2]
 X, mu, sigma = featureNormalize(X)
 X = np.concatenate((np.ones([m, 1], dtype=float), X), axis=1)
 
