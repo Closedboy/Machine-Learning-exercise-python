@@ -11,15 +11,13 @@ from sigmoid import sigmoid
 
 
 def costFunctionReg(theta, X, y, reg_factor, requires_grad=False):
-    epsilon = 1e-5
-    m = np.size(X, axis=0)
+    m = len(y)
     h = sigmoid(X @ theta)
-    J = -1.0 / m * (y.T @ np.log(h + epsilon) + (1 - y).T @ np.log(1 - h + epsilon)) \
+    J = -1.0 / m * (y.T @ np.log(h) + (1 - y).T @ np.log(1 - h)) \
         + reg_factor / (2.0 * m) * theta[1:].T @ theta[1:]
     if requires_grad:
-        temp = theta
-        temp[0, :] = 0
-        grad = 1.0 / m * X.T @ (h - y) + reg_factor / m * temp
+        grad = X.T @ (h - y) / m
+        grad[1:] = grad[1:] + reg_factor * theta[1:] / m
         return J, grad
     else:
         return J
